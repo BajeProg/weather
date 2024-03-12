@@ -40,3 +40,8 @@ function ajax_echo(
             'full' => date('Y-m-d H:i:s')
         )));
 };
+
+function handle_error($message) {
+    echo ajax_echo("Ошибка!", $message, true, "ERROR", null);
+    exit();
+}

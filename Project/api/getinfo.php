@@ -106,16 +106,7 @@ function get_from_DB($connection, $location = null, $service = null){
 
     $res_query = mysqli_query($connection, $query);
 
-    if(!$res_query){
-        echo ajax_echo(
-            "Ошибка!", 
-            "Ошибка в запросе!",
-            true,
-            "ERROR",
-            null
-        );
-        exit();
-    }
+    if(!$res_query) handle_error("Ошибка в запросе!");
 
     $arr_res = array();
     $rows = mysqli_num_rows($res_query);

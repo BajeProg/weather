@@ -9,16 +9,7 @@ $query = "INSERT INTO `Users`(`Username`, `Password_hash`) VALUES ('".$_POST["re
 
 $res_query = mysqli_query($connection, $query);
 
-    if(!$res_query){
-        echo ajax_echo(
-            "Ошибка!", 
-            "Ошибка в запросе!",
-            true,
-            "ERROR",
-            null
-        );
-        exit();
-    }
+    if(!$res_query) handle_error("Ошибка в запросе!");
 
     session_create_id();
 
@@ -26,16 +17,7 @@ $res_query = mysqli_query($connection, $query);
 
     $res_query = mysqli_query($connection, $query);
     
-        if(!$res_query){
-            echo ajax_echo(
-                "Ошибка!", 
-                "Ошибка в запросе!",
-                true,
-                "ERROR",
-                null
-            );
-            exit();
-        }
+    if(!$res_query) handle_error("Ошибка в запросе!");
 
     $row = mysqli_fetch_assoc($res_query);
     $_SESSION["userID"] = $row["ID"];

@@ -12,28 +12,10 @@ foreach($data as $value){
 
 $result = mysqli_multi_query($connection, $query);
 
-if(!$result){
-    echo ajax_echo(
-        "Ошибка!", 
-        "Ошибка в запросе!",
-        true,
-        "ERROR",
-        null
-    );
-    exit();
-}
+if(!$result) handle_error("Ошибка в запросе!");
 
 $res = mysqli_fetch_assoc($result);
-    if($res["RESULT"] == "0"){
-        echo ajax_echo(
-            "Ошибка!", 
-            "Не удалось добавить запись!",
-            true,
-            "ERROR",
-            null
-        );
-        exit();
-    }
+    if($res["RESULT"] == "0") handle_error("Не удалось добавить запись!");
 
     echo ajax_echo(
         "Успех!", 

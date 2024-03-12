@@ -7,16 +7,7 @@ $query = "SELECT `ID` FROM `Sessions` WHERE `Token` = '".session_id()."' AND `Da
 
 $res_query = mysqli_query($connection, $query);
     
-if(!$res_query){
-    echo ajax_echo(
-        "Ошибка!", 
-        "Ошибка в запросе!",
-        true,
-        "ERROR",
-        null
-    );
-    exit();
-}
+if(!$res_query) handle_error("Ошибка в запросе!");
 
 if(mysqli_num_rows($res_query) > 0) header('Location: index.php');
 ?>

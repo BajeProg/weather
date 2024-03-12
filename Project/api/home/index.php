@@ -9,16 +9,7 @@ $query = "SELECT `ID` FROM `Sessions` WHERE `Token` = '".session_id()."' AND `Da
 
 $res_query = mysqli_query($connection, $query);
     
-if(!$res_query){
-    echo ajax_echo(
-        "Ошибка!", 
-        "Ошибка в запросе!",
-        true,
-        "ERROR",
-        null
-    );
-    exit();
-}
+if(!$res_query) handle_error("Ошибка в запросе!");
 
 if(mysqli_num_rows($res_query) == 0){ 
     $message = "";
@@ -35,31 +26,13 @@ $query = "UPDATE `Sessions` SET `Date_end`='".$currentDateTime->format('Y-m-d H:
 
 $res_query = mysqli_query($connection, $query);
     
-if(!$res_query){
-    echo ajax_echo(
-        "Ошибка!", 
-        "Ошибка в запросе!",
-        true,
-        "ERROR",
-        null
-    );
-    exit();
-}
+if(!$res_query) handle_error("Ошибка в запросе!"); 
 
 
 $query = "SELECT * FROM `API_keys` WHERE `User_ID` = ".$_SESSION["userID"];
 $res_query = mysqli_query($connection, $query);
     
-if(!$res_query){
-    echo ajax_echo(
-        "Ошибка!", 
-        "Ошибка в запросе!",
-        true,
-        "ERROR",
-        null
-    );
-    exit();
-}
+if(!$res_query) handle_error("Ошибка в запросе!");
 
 $arr_res = array();
 $rows = mysqli_num_rows($res_query);

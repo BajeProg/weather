@@ -7,16 +7,7 @@ $query = "SELECT ID FROM `Users` WHERE `Username` = '".$_POST["login"]."' AND `P
 
     $res_query = mysqli_query($connection, $query);
     
-    if(!$res_query){
-        echo ajax_echo(
-            "Ошибка!", 
-            "Ошибка в запросе!",
-            true,
-            "ERROR",
-            null
-        );
-        exit();
-    }
+    if(!$res_query) handle_error("Ошибка в запросе!");
 
     if(mysqli_num_rows($res_query) == 0) header('Location: login.php?message=Пользователь не найден');
 
@@ -30,15 +21,6 @@ $query = "SELECT ID FROM `Users` WHERE `Username` = '".$_POST["login"]."' AND `P
 
     $res_query = mysqli_query($connection, $query);
     
-        if(!$res_query){
-            echo ajax_echo(
-                "Ошибка!", 
-                "Ошибка в запросе!",
-                true,
-                "ERROR",
-                null
-            );
-            exit();
-        }
+    if(!$res_query) handle_error("Ошибка в запросе!");
 
     header('Location: index.php');
