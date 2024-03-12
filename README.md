@@ -34,26 +34,38 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
    ```
    Ответ
    ```json
-   {
-       "geo": "Пермь",
-       "temp": -7,
-       "condition": "cloudy",
-       "img": "https://yastatic.net/weather/i/icons/funky/light/bkn_d.svg"
-   }
+   [
+    {
+        "ID": "64",
+        "Date": "2024-03-12 13:00:13",
+        "Location": "Пермь",
+        "Temperature": "-7",
+        "Service": "yandex",
+        "ServiceFullName": "Яндекс.Погода",
+        "Condition": "cloudy",
+        "Image": "https://yastatic.net/weather/i/icons/funky/light/bkn_d.svg"
+    }
+   ]
    ```
 3. **OpenWeatherMap:**
    Запрос
    ```bash
-   curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&from=openweathermap&location=Саратов"
+   curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&from=openweathermap"
    ```
    Ответ
    ```json
-   {
-       "geo": "Саратов",
-       "temp": -2.3,
-       "condition": "Clouds",
-       "img": "https://openweathermap.org/img/w/04d.png"
-   }
+   [
+    {
+        "ID": "65",
+        "Date": "2024-03-12 13:00:13",
+        "Location": "Пермь",
+        "Temperature": "-7.06",
+        "Service": "openweathermap",
+        "ServiceFullName": "Open Weater Map",
+        "Condition": "Snow",
+        "Image": "https://openweathermap.org/img/w/13d.png"
+    }
+   ]
    ```
 5. **WeatherAPI:**
    Запрос
@@ -62,12 +74,18 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
    ```
    Ответ
    ```json
-   {
-       "geo": "Пермь",
-       "temp": -7,
-       "condition": "Небольшой снег",
-       "img": "//cdn.weatherapi.com/weather/64x64/day/326.png"
-   }
+   [
+    {
+        "ID": "66",
+        "Date": "2024-03-12 13:00:13",
+        "Location": "Пермь",
+        "Temperature": "-7",
+        "Service": "weatherapi",
+        "ServiceFullName": "Weather API",
+        "Condition": "Небольшой снег",
+        "Image": "//cdn.weatherapi.com/weather/64x64/day/326.png"
+    }
+   ]
    ```
 7. **Все данные:**
    Запрос
