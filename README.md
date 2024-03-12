@@ -28,6 +28,7 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
 ### Примеры запросов и ответов
 
 1. **Яндекс.Погода:**
+
    Запрос
    ```bash
    curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&from=yandex"
@@ -48,6 +49,7 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
    ]
    ```
 3. **OpenWeatherMap:**
+
    Запрос
    ```bash
    curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&from=openweathermap&location=Москва"
@@ -68,6 +70,7 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
    ]
    ```
 5. **WeatherAPI:**
+
    Запрос
    ```bash
    curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&from=weatherapi"
@@ -88,6 +91,7 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
    ]
    ```
 7. **Все данные:**
+
    Запрос
    ```bash
    curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&from=all"
@@ -127,7 +131,8 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
     }
    ]
    ```
-8. **Все данные из базы данных:**
+9. **Все данные из базы данных:**
+   
    Запрос
    ```bash
    curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&from=allfromdb"
@@ -168,7 +173,8 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
     }
    ]
    ```
-9. **Среднее значение по всем сервисам:**
+10. **Среднее значение по всем сервисам:**
+   
    Запрос
    ```bash
    curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&from=avg"
