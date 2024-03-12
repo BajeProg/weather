@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прогноз погоды</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        nav{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            height: 20px;
+        }
+        
+        nav a{
+            margin-left: 25px;
+            margin-right: 25px;
+            color: #222;
+            text-decoration: none;
+        }
+
+        nav a:hover{
+            color: #aaa;
+            text-decoration: underline;
+        }
+
+        .weather-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .weather-card img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .weather-info {
+            flex: 1;
+        }
+
+        .weather-info h2 {
+            margin: 0;
+        }
+
+        .weather-info p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Прогноз погоды</h1>
+
+    <nav>
+        <a href="./">Главная</a>
+        <a href="./api/home">API</a>
+    </nav>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
