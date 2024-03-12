@@ -50,20 +50,20 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
 3. **OpenWeatherMap:**
    Запрос
    ```bash
-   curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&from=openweathermap"
+   curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&from=openweathermap&location=Москва"
    ```
    Ответ
    ```json
    [
     {
-        "ID": "65",
-        "Date": "2024-03-12 13:00:13",
-        "Location": "Пермь",
-        "Temperature": "-7.06",
+        "ID": "2",
+        "Date": "2024-03-11 15:28:42",
+        "Location": "Москва",
+        "Temperature": "0.96",
         "Service": "openweathermap",
         "ServiceFullName": "Open Weater Map",
-        "Condition": "Snow",
-        "Image": "https://openweathermap.org/img/w/13d.png"
+        "Condition": "Clouds",
+        "Image": "https://openweathermap.org/img/w/04d.png"
     }
    ]
    ```
