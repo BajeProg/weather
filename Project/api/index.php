@@ -32,48 +32,48 @@ if($row["Today_calls"] > 2000){
     die('Превышен дневной лимит запросов');
 }
 
-$loaction = null;
 if(isset($_GET["location"])) $loaction = get_coords($_GET["location"]);
+else $loaction = get_coords();
 
 switch (strtolower($_GET['from'])) {
     case 'yandex':
-        exit(json_encode(get_yandex_wether($loaction)));
+        exit(json_encode(get_from_DB($connection, $loaction, "yandex")));
 
     case 'openweathermap':
-        exit(json_encode(get_openweathermap_wether($loaction)));
+        exit(json_encode(get_from_DB($connection, $loaction, "openweathermap")));
 
     case 'weatherapi':
-        exit(json_encode(get_wetherapi_wether($loaction)));
+        exit(json_encode(get_from_DB($connection, $loaction, "weatherapi")));
 
     case 'all':
-        if($loaction == null) $geo = get_coords("Пермь");
-        else $geo = $loaction;
         exit(json_encode(
             array(
                 array(
                     "from" => "yandex",
                     "full" => "Яндекс.Погода",
-                    "data" => get_yandex_wether($geo)
+                    "data" => get_yandex_wether($loaction)
                 ),
                 array(
                     "from" => "openweathermap",
                     "full" => "Open Weater Map",
-                    "data" => get_openweathermap_wether($geo)
+                    "data" => get_openweathermap_wether($loaction)
                 ),
                 array(
                     "from" => "weatherapi",
                     "full" => "Weather API",
-                    "data" => get_wetherapi_wether($geo)
+                    "data" => get_wetherapi_wether($loaction)
                 )
             )
         ));
         break;
 
     case 'allfromdb':
-        $loc = isset($_GET["location"]) ? $_GET["location"] : null;
         $serv = isset($_GET["service"]) ? $_GET["service"] : null;
-        exit(json_encode(get_from_DB($connection, $loc, $serv)));
+        exit(json_encode(get_from_DB($connection, $loaction, $serv)));
         break;
+
+    case 'avg':
+        exit(json_encode(avg_temp($connection, $loaction)));
 
     default:
         handle_error("Неизвестный источник данных.");

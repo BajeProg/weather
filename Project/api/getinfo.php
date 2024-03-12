@@ -64,7 +64,8 @@ function get_coords($from = null){
     }
     else{ 
         $data = $dadata->clean("address", $from);
-        $result = array("lat" => $data[0]['geo_lat'], "lon" => $data[0]['geo_lon'], "geo" => $data[0]['city']);
+        $city = $data[0]['city'] == null ? $data[0]['region'] : $data[0]['city'];
+        $result = array("lat" => $data[0]['geo_lat'], "lon" => $data[0]['geo_lon'], "geo" => $city);
     }
     $dadata->close();
     return $result;
@@ -89,7 +90,7 @@ function get_wetherapi_wether($geo = null){
 
 function get_from_DB($connection, $location = null, $service = null){
 
-    if($location == null) $location = "Пермь";//get_coords();
+    if($location == null) $location = get_coords();
 
     if($service == null)
     $query = "SELECT w.*
@@ -97,10 +98,10 @@ function get_from_DB($connection, $location = null, $service = null){
     JOIN (
         SELECT `Service`, MAX(`Date`) AS max_date
         FROM `Weather`
-        WHERE `Location` = '".$location."'
+        WHERE `Location` = '".$location["geo"]."'
         GROUP BY `Service`
     ) t ON w.`Service` = t.`Service` AND w.`Date` = t.`max_date`
-    WHERE `Location` = '".$location."'";
+    WHERE `Location` = '".$location["geo"]."'";
 
     else $query = "SELECT * FROM `Weather` WHERE `Location` = '".$location["geo"]."' AND `Service` = '".$service."' ORDER BY `Date` DESC LIMIT 1";
 
@@ -116,4 +117,13 @@ function get_from_DB($connection, $location = null, $service = null){
         array_push($arr_res, $row);
     }
     return $arr_res;
+}
+
+function avg_temp($connection, $location = null){
+    $arr = get_from_DB($connection, $location);
+    $avg = 0;
+    foreach($arr as $val) $avg += $val["Temperature"];
+
+    if(count($arr) > 0) return array("Location" => $val["Location"], "AVG" => $avg / count($arr));
+    else return array("Location" => $val["Location"], "AVG" => null);
 }

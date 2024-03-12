@@ -2,7 +2,7 @@
 include_once("db_connect.php");
 include_once("functions.php");
 
-$data = json_decode(file_get_contents("https://otakuclique.ru/api/?from=all&token=eeb9a0ca6dfc7c20c89ece32178fb221e7c93723f4dd3ce10a60cc80333bc1bf"));
+$data = json_decode(file_get_contents("https://otakuclique.ru/api/?from=all&token=eeb9a0ca6dfc7c20c89ece32178fb221e7c93723f4dd3ce10a60cc80333bc1bf&location=Пермь"));
 
 $query = "";
 foreach($data as $value){

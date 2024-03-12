@@ -13,16 +13,18 @@ if(!$res_query) handle_error("Ошибка в запросе!");
 
 if(mysqli_num_rows($res_query) == 0){ 
     $message = "";
-    if(isset($_SESSION["userID"])) $message = "?message=Время сессии истекло";
+    if(isset($_SESSION["userID"])) $message = "?message=Время сессии истекло".$query;
     session_unset();   // Remove the $_SESSION variable information.
     session_destroy(); // Remove the server-side session information.
     // Unset the cookie on the client-side.
     setcookie("PHPSESSID", "", 1); // Force the cookie to expire.
+    session_start();
+    session_regenerate_id(true);
     header('Location: login.php'.$message);
 }
 
 $currentDateTime->modify('+1 hour');
-$query = "UPDATE `Sessions` SET `Date_end`='".$currentDateTime->format('Y-m-d H:i:s')."' WHERE `ID` = ".$_SESSION["userID"];
+$query = "UPDATE `Sessions` SET `Date_end`='".$currentDateTime->format('Y-m-d H:i:s')."' WHERE `Token` = '".session_id()."'";
 
 $res_query = mysqli_query($connection, $query);
     

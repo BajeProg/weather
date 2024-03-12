@@ -25,6 +25,19 @@
             text-align: center;
         }
 
+        p{
+            text-align: center;
+        }
+
+        .city{
+            font-weight: bold;
+        }
+
+        .temp{
+            font-weight: bold;
+            color: #a33;
+        }
+
         nav{
             display: flex;
             justify-content: center;
@@ -78,9 +91,13 @@
 <div class="container">
     <h1>Прогноз погоды</h1>
 
+    <p>Согласно проанализированным данным средняя температура в городе <span class="city"></span> составляет <span class="temp"></span></p>
+
     <nav>
         <a href="./">Главная</a>
+        <a href="download.php" target="_blank">Экспорт</a>
         <a href="./api/home">API</a>
+        <a href="https://github.com/BajeProg/weather">Разработчикам</a>
     </nav>
 
 </div>

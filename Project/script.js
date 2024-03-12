@@ -49,5 +49,29 @@ async function fetchData() {
     }
 }
 
+
+// Функция для создания карточки погоды и добавления ее в HTML
+function createAVGCard(data) {
+    const city = document.querySelector('.city');
+    const temp = document.querySelector('.temp');
+
+    city.innerHTML = data.Location;
+    temp.innerHTML = data.AVG + "°C";
+}
+
+// Асинхронная функция для получения данных из API
+async function fetchAnalysData() {
+    try {
+        const response = await fetch('https://otakuclique.ru/api/?from=avg&token=eeb9a0ca6dfc7c20c89ece32178fb221e7c93723f4dd3ce10a60cc80333bc1bf');
+        const data = await response.json();
+
+        // Итерация по данным и создание карточек
+        createAVGCard(data);
+    } catch (error) {
+        console.error('Ошибка при получении данных из API:', error);
+    }
+}
+
 // Вызываем функцию для получения данных из API
 fetchData();
+fetchAnalysData();
