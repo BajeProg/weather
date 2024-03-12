@@ -56,13 +56,13 @@ function createAVGCard(data) {
     const temp = document.querySelector('.temp');
 
     city.innerHTML = data.Location;
-    temp.innerHTML = data.AVG + "°C";
+    temp.innerHTML = (Math.round(data.AVG * 100) / 100) + "°C";
 }
 
 // Асинхронная функция для получения данных из API
 async function fetchAnalysData() {
     try {
-        const response = await fetch('https://otakuclique.ru/api/?from=avg&token=eeb9a0ca6dfc7c20c89ece32178fb221e7c93723f4dd3ce10a60cc80333bc1bf');
+        const response = await fetch('https://otakuclique.ru/api/?analytics_type=avghour&token=eeb9a0ca6dfc7c20c89ece32178fb221e7c93723f4dd3ce10a60cc80333bc1bf');
         const data = await response.json();
 
         // Итерация по данным и создание карточек

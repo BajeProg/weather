@@ -13,7 +13,7 @@ if(!$res_query) handle_error("Ошибка в запросе!");
 
 if(mysqli_num_rows($res_query) == 0){ 
     $message = "";
-    if(isset($_SESSION["userID"])) $message = "?message=Время сессии истекло".$query;
+    if(isset($_SESSION["userID"])) $message = "?message=Время сессии истекло";
     session_unset();   // Remove the $_SESSION variable information.
     session_destroy(); // Remove the server-side session information.
     // Unset the cookie on the client-side.

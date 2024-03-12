@@ -48,27 +48,8 @@ function get_yandex_wether($geo = null){
 
 }
 
-function get_coords($from = null){
-
-    global $tokens;
-    $token = $tokens["dadata-token"];
-    $secret = $tokens["dadata-secret"];
-    $dadata = new Dadata($token, $secret);
-    $dadata->init();
-    if($from == null) {
-        $data = $dadata->iplocate($_SERVER["REMOTE_ADDR"]);
-        if($data['location'] == null) exit("Не удалось определить ваше местоположение");
-
-        $data = $data['location']['data'];
-        $result = array("lat" => $data['geo_lat'], "lon" => $data['geo_lon'], "geo" => $data['city']);
-    }
-    else{ 
-        $data = $dadata->clean("address", $from);
-        $city = $data[0]['city'] == null ? $data[0]['region'] : $data[0]['city'];
-        $result = array("lat" => $data[0]['geo_lat'], "lon" => $data[0]['geo_lon'], "geo" => $city);
-    }
-    $dadata->close();
-    return $result;
+function get_coords(){
+    return array("lat" => "58.010455", "lon" => "56.229443", "geo" => "Пермь");;
 }
 
 function get_wetherapi_wether($geo = null){
@@ -119,11 +100,78 @@ function get_from_DB($connection, $location = null, $service = null){
     return $arr_res;
 }
 
-function avg_temp($connection, $location = null){
+function avg_hour_temp($connection, $location = null){
     $arr = get_from_DB($connection, $location);
     $avg = 0;
     foreach($arr as $val) $avg += $val["Temperature"];
 
-    if(count($arr) > 0) return array("Location" => $val["Location"], "AVG" => $avg / count($arr));
-    else return array("Location" => $val["Location"], "AVG" => null);
+    $currentDateTime = new DateTime();
+    $nextHourDateTime = (new DateTime())->modify('+1 hour');
+
+    if (count($arr) == 0) $avg = null;
+    else $avg = $avg / count($arr);
+
+    return array(
+        "Location" => $val["Location"], 
+        "AVG" => $avg, 
+        "Date_from" => $currentDateTime->format('Y-m-d H').":00:00",
+        "Date_to" => $nextHourDateTime->format('Y-m-d H').":00:00"
+    );
+}
+
+function avg_day_temp($connection, $location = null){
+    $avg = 0;
+
+    $currentDateTime = new DateTime();
+    $nextDayDateTime = (new DateTime())->modify('+1 day');
+
+    $query = "SELECT `Temperature` FROM `Weather` WHERE `Location`='Пермь' AND `Date` >= '".$currentDateTime->format('Y-m-d')." 00:00:00' AND `Date` < '".$nextDayDateTime->format('Y-m-d')." 00:00:00'";
+    $res_query = mysqli_query($connection, $query);
+    if(!$res_query) handle_error("Ошибка в запросе!");
+
+    $rows = mysqli_num_rows($res_query);
+
+    for ($i=0; $i < $rows; $i++){
+        $row = mysqli_fetch_assoc($res_query);
+        $avg = $avg + $row["Temperature"];
+    }
+
+    if ($row == 0) $avg = null;
+    else $avg = $avg / $rows;
+
+    return array(
+        "Location" => "Пермь", 
+        "AVG" => $avg, 
+        "Date_from" => $currentDateTime->format('Y-m-d')." 00:00:00",
+        "Date_to" => $nextDayDateTime->format('Y-m-d')." 00:00:00"
+    );
+}
+
+
+function avg_month_temp($connection, $location = null){
+    $avg = 0;
+
+    $currentDateTime = new DateTime();
+    $nextMonthDateTime = (new DateTime())->modify('+1 month');
+
+    $query = "SELECT `Temperature` FROM `Weather` WHERE `Location`='Пермь' AND `Date` >= '".$currentDateTime->format('Y-m')."-01 00:00:00' AND `Date` < '".$nextMonthDateTime->format('Y-m')."-01 00:00:00'";
+    $res_query = mysqli_query($connection, $query);
+    if(!$res_query) handle_error("Ошибка в запросе!");
+
+    $rows = mysqli_num_rows($res_query);
+
+    for ($i=0; $i < $rows; $i++){
+        $row = mysqli_fetch_assoc($res_query);
+        $avg = $avg + $row["Temperature"];
+    }
+
+    if ($row == 0) $avg = null;
+    else $avg = $avg / $rows;
+
+    return array(
+        "Location" => "Пермь", 
+        "AVG" => $avg, 
+        "Date_from" => $currentDateTime->format('Y-m')."-01 00:00:00",
+        "Date_to" => $nextMonthDateTime->format('Y-m')."-01 00:00:00"
+    );
 }

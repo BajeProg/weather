@@ -9,7 +9,7 @@ $query = "INSERT INTO `Users`(`Username`, `Password_hash`) VALUES ('".$_POST["re
 
 $res_query = mysqli_query($connection, $query);
 
-    if(!$res_query) handle_error("Ошибка в запросе!");
+    if(!$res_query) header('Location: login.php?message=Пользователь с таким логином уже зарегистрирован');
 
     session_create_id();
 
