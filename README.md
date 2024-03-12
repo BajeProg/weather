@@ -21,10 +21,6 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
    - all
    - allfromdb
 
-   Пример запроса и ответа для каждого варианта приведен ниже.
-
-3. **location** (необязательный): Город, для которого требуется получить данные о погоде.
-
 ### Примеры запросов и ответов
 
 1. **Яндекс.Погода:**
@@ -52,20 +48,20 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
 
    Запрос
    ```bash
-   curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&from=openweathermap&location=Москва"
+   curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&from=openweathermap"
    ```
    Ответ
    ```json
    [
     {
-        "ID": "2",
-        "Date": "2024-03-11 15:28:42",
-        "Location": "Москва",
-        "Temperature": "0.96",
+        "ID": "80",
+        "Date": "2024-03-12 18:00:12",
+        "Location": "Пермь",
+        "Temperature": "-9.03",
         "Service": "openweathermap",
         "ServiceFullName": "Open Weater Map",
-        "Condition": "Clouds",
-        "Image": "https://openweathermap.org/img/w/04d.png"
+        "Condition": "Snow",
+        "Image": "https://openweathermap.org/img/w/13n.png"
     }
    ]
    ```
