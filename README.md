@@ -12,18 +12,21 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
 
 ### Параметры запроса
 
-1. **token** (обязательный): Ваш API-ключ, полученный на [otakuclique.ru/api/home/](https://otakuclique.ru/api/home/).
+Всего 3 параметра: [token](#token), [from](#from) и [analytics_type](#analytics_type). 
 
-2. **from** (обязательный): Откуда брать данные. Доступные варианты:
+---
+1. <a id="token"></a>**token** (обязательный): Ваш API-ключ, полученный на [otakuclique.ru/api/home/](https://otakuclique.ru/api/home/).
+---
+2. <a id="from"></a>**from** (не обязательный если указан analytics_type): Откуда брать данные. Доступные варианты:
    - yandex
    - openweathermap
    - weatherapi
    - all
    - allfromdb
 
-### Примеры запросов и ответов
+#### Примеры запросов и ответов с параметром from
 
-1. **Яндекс.Погода:**
+- **Яндекс.Погода:**
 
    Запрос
    ```bash
@@ -44,7 +47,7 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
     }
    ]
    ```
-3. **OpenWeatherMap:**
+- **OpenWeatherMap:**
 
    Запрос
    ```bash
@@ -65,7 +68,7 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
     }
    ]
    ```
-5. **WeatherAPI:**
+- **WeatherAPI:**
 
    Запрос
    ```bash
@@ -86,7 +89,7 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
     }
    ]
    ```
-7. **Все данные:**
+- **Все данные:**
 
    Запрос
    ```bash
@@ -127,7 +130,7 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
     }
    ]
    ```
-9. **Все данные из базы данных:**
+- **Все данные из базы данных:**
    
    Запрос
    ```bash
@@ -169,20 +172,60 @@ API доступно по адресу [https://otakuclique.ru/api/](https://ota
     }
    ]
    ```
-10. **Среднее значение по всем сервисам:**
-   
+---
+3. <a id="analytics_type"></a>**analytics_type** (не обязательный если указан from): Тип анализа. Доступные варианты:
+   - avghour
+   - avgday
+   - avgmonth
+
+#### Примеры запросов и ответов с параметром analytics_type
+
+- **avghour:**
+
    Запрос
    ```bash
-   curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&from=avg"
+   curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&analytics_type=avghour"
    ```
-   
    Ответ
    ```json
    {
     "Location": "Пермь",
-    "AVG": -7.02
+    "AVG": -11.343333333333334,
+    "Date_from": "2024-03-12 19:00:00",
+    "Date_to": "2024-03-12 20:00:00"
    }
    ```
+- **avgday:**
+
+   Запрос
+   ```bash
+   curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&analytics_type=avgday"
+   ```
+   Ответ
+   ```json
+   {
+    "Location": "Пермь",
+    "AVG": -10.439074074074075,
+    "Date_from": "2024-03-12 00:00:00",
+    "Date_to": "2024-03-13 00:00:00"
+   }
+   ```
+- **WeatherAPI:**
+
+   Запрос
+   ```bash
+   curl -X GET "https://otakuclique.ru/api/?token=YOUR_API_KEY&analytics_type=avgmonth"
+   ```
+   Ответ
+   ```json
+   {
+    "Location": "Пермь",
+    "AVG": -10.451153846153842,
+    "Date_from": "2024-03-01 00:00:00",
+    "Date_to": "2024-04-01 00:00:00"
+   }
+   ```
+
    
 ## Примечание
 - В случае успешного запроса, API вернет данные о погоде в формате JSON.
