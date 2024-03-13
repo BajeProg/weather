@@ -5,39 +5,32 @@ session_start();
 
 if($_POST["reg-password"] != $_POST["confirm-password"]) header('Location: login.php?message=Пароли не совпадают');
 
-$query = "INSERT INTO `Users`(`Username`, `Password_hash`) VALUES ('".$_POST["reg-login"]."', '".hash("sha256", $_POST["reg-password"])."')";
-
+//проверка существования пользователя
+$query = "SELECT ID FROM `Users` WHERE `Username` = '".$_POST["reg-login"]."'";
 $res_query = mysqli_query($connection, $query);
+if(!$res_query) handle_error("Ошибка в запросе!");
+if(mysqli_num_rows($res_query) > 0) header('Location: login.php?message=Пользователь с таким логином уже зарегистрирован');
 
-    if(!$res_query) header('Location: login.php?message=Пользователь с таким логином уже зарегистрирован');
+//регистрация
+$query = "INSERT INTO `Users`(`Username`, `Password_hash`) VALUES ('".$_POST["reg-login"]."', '".hash("sha256", $_POST["reg-password"])."')";
+$res_query = mysqli_query($connection, $query);
+if(!$res_query) handle_error("Ошибка в запросе!");
 
-    session_create_id();
+session_regenerate_id(true);
 
-    $query = "SELECT ID FROM `Users` WHERE `Username` = '".$_POST["reg-login"]."' AND `Password_hash` = '".hash("sha256", $_POST["reg-password"])."'";
+$query = "SELECT ID FROM `Users` WHERE `Username` = '".$_POST["reg-login"]."' AND `Password_hash` = '".hash("sha256", $_POST["reg-password"])."'";
+$res_query = mysqli_query($connection, $query);
+if(!$res_query) handle_error("Ошибка в запросе!");
 
-    $res_query = mysqli_query($connection, $query);
-    
-    if(!$res_query) handle_error("Ошибка в запросе!");
-
-    $row = mysqli_fetch_assoc($res_query);
-    $_SESSION["userID"] = $row["ID"];
+$row = mysqli_fetch_assoc($res_query);
+$_SESSION["userID"] = $row["ID"];
 
 
-    $currentDateTime = new DateTime();
-    $currentDateTime->modify('+1 hour');
-    $query = "INSERT INTO `Sessions`(`User_ID`, `Token`, `Date_end`) VALUES (".$row["ID"].", '".session_id()."', '".$currentDateTime->format('Y-m-d H:i:s')."')";
+$currentDateTime = new DateTime();
+$currentDateTime->modify('+1 hour');
 
-    $res_query = mysqli_query($connection, $query);
-    
-        if(!$res_query){
-            echo ajax_echo(
-                "Ошибка!", 
-                "Ошибка в запросе!",
-                true,
-                "ERROR",
-                null
-            );
-            exit();
-        }
+$query = "INSERT INTO `Sessions`(`User_ID`, `Token`, `Date_end`) VALUES (".$row["ID"].", '".session_id()."', '".$currentDateTime->format('Y-m-d H:i:s')."')";
+$res_query = mysqli_query($connection, $query);
+if(!$res_query) handle_error("Ошибка в запросе!");
 
-    header('Location: index.php');
+header('Location: index.php');
