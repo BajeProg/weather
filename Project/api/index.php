@@ -14,16 +14,9 @@ if(!check_token($_GET["token"], $connection)){
     die('Неверно указан токен');
 }
 
-$query = "UPDATE `API_keys` SET `Today_calls`= `Today_calls` + 1 WHERE `Token`='".$_GET["token"]."'";
-$res_query = mysqli_query($connection, $query);
-if(!$res_query) handle_error("Ошибка в запросе!");
+database_query("UPDATE `API_keys` SET `Today_calls`= `Today_calls` + 1 WHERE `Token`='".$_GET["token"]."'");
 
-$query = "SELECT `Today_calls` FROM `API_keys` WHERE `Token`='".$_GET["token"]."'";
-$res_query = mysqli_query($connection, $query);
-if(!$res_query) handle_error("Ошибка в запросе!");
-
-$row = mysqli_fetch_assoc($res_query);
-
+$row = mysqli_fetch_assoc(database_query("SELECT `Today_calls` FROM `API_keys` WHERE `Token`='".$_GET["token"]."'"));
 if($row["Today_calls"] > 2000){
     http_response_code(401);
     die('Превышен дневной лимит запросов');
@@ -34,13 +27,13 @@ $loaction = get_coords();
 if(isset($_GET['from'])){
 switch (strtolower($_GET['from'])) {
     case 'yandex':
-        exit(json_encode(get_from_DB($connection, $loaction, "yandex")));
+        exit(json_encode(get_from_DB($loaction, "yandex")));
 
     case 'openweathermap':
-        exit(json_encode(get_from_DB($connection, $loaction, "openweathermap")));
+        exit(json_encode(get_from_DB($loaction, "openweathermap")));
 
     case 'weatherapi':
-        exit(json_encode(get_from_DB($connection, $loaction, "weatherapi")));
+        exit(json_encode(get_from_DB($loaction, "weatherapi")));
 
     case 'all':
         exit(json_encode(
@@ -66,7 +59,7 @@ switch (strtolower($_GET['from'])) {
 
     case 'allfromdb':
         $serv = isset($_GET["service"]) ? $_GET["service"] : null;
-        exit(json_encode(get_from_DB($connection, $loaction, $serv)));
+        exit(json_encode(get_from_DB($loaction, $serv)));
         break;
 
     default:
@@ -77,13 +70,13 @@ switch (strtolower($_GET['from'])) {
 else if(isset($_GET['analytics_type'])){
     switch (strtolower($_GET['analytics_type'])) {
         case 'avghour':
-            exit(json_encode(avg_hour_temp($connection, $loaction)));
+            exit(json_encode(avg_hour_temp($loaction)));
             
         case 'avgday':
-            exit(json_encode(avg_day_temp($connection, $loaction)));
+            exit(json_encode(avg_day_temp($loaction)));
             
         case 'avgmonth':
-            exit(json_encode(avg_month_temp($connection, $loaction)));
+            exit(json_encode(avg_month_temp($loaction)));
     
         default:
             handle_error("Неизвестный источник данных.");

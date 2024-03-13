@@ -1,4 +1,5 @@
 <?php
+include_once("db_connect.php");
 
 function check_token($token, $connection){
     $query = "SELECT `ID` FROM `API_keys` WHERE `Token` = '".$token."'";
@@ -76,4 +77,11 @@ function download_send_headers($filename) {
     // disposition / encoding on response body
     header("Content-Disposition: attachment;filename={$filename}");
     header("Content-Transfer-Encoding: binary");
+}
+
+function database_query($query){
+    global $connection;
+    $res_query = mysqli_query($connection, $query);
+    if(!$res_query) handle_error("Ошибка в запросе!");
+    return $res_query;
 }

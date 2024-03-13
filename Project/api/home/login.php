@@ -1,15 +1,10 @@
 <?php
-include_once("../db_connect.php");
 include_once("../functions.php");
 session_start();
+
 $currentDateTime = new DateTime();
 $query = "SELECT `ID` FROM `Sessions` WHERE `Token` = '".session_id()."' AND `Date_end` > '".$currentDateTime->format('Y-m-d H:i:s')."'";
-
-$res_query = mysqli_query($connection, $query);
-    
-if(!$res_query) handle_error("Ошибка в запросе!");
-
-if(mysqli_num_rows($res_query) > 0) header('Location: index.php');
+if(mysqli_num_rows(database_query($query)) > 0) header('Location: index.php');
 ?>
 <!DOCTYPE html>
 <html lang="ru">

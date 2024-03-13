@@ -69,7 +69,7 @@ function get_wetherapi_wether($geo = null){
     );
 }
 
-function get_from_DB($connection, $location = null, $service = null){
+function get_from_DB($location = null, $service = null){
 
     if($location == null) $location = get_coords();
 
@@ -86,9 +86,7 @@ function get_from_DB($connection, $location = null, $service = null){
 
     else $query = "SELECT * FROM `Weather` WHERE `Location` = '".$location["geo"]."' AND `Service` = '".$service."' ORDER BY `Date` DESC LIMIT 1";
 
-    $res_query = mysqli_query($connection, $query);
-
-    if(!$res_query) handle_error("Ошибка в запросе!");
+    $res_query = database_query($query);
 
     $arr_res = array();
     $rows = mysqli_num_rows($res_query);
@@ -100,8 +98,8 @@ function get_from_DB($connection, $location = null, $service = null){
     return $arr_res;
 }
 
-function avg_hour_temp($connection, $location = null){
-    $arr = get_from_DB($connection, $location);
+function avg_hour_temp($location = null){
+    $arr = get_from_DB($location);
     $avg = 0;
     foreach($arr as $val) $avg += $val["Temperature"];
 
@@ -119,15 +117,14 @@ function avg_hour_temp($connection, $location = null){
     );
 }
 
-function avg_day_temp($connection, $location = null){
+function avg_day_temp($location = null){
     $avg = 0;
 
     $currentDateTime = new DateTime();
     $nextDayDateTime = (new DateTime())->modify('+1 day');
 
-    $query = "SELECT `Temperature` FROM `Weather` WHERE `Location`='Пермь' AND `Date` >= '".$currentDateTime->format('Y-m-d')." 00:00:00' AND `Date` < '".$nextDayDateTime->format('Y-m-d')." 00:00:00'";
-    $res_query = mysqli_query($connection, $query);
-    if(!$res_query) handle_error("Ошибка в запросе!");
+    $res_query = database_query("SELECT `Temperature` FROM `Weather` 
+    WHERE `Location`='Пермь' AND `Date` >= '".$currentDateTime->format('Y-m-d')." 00:00:00' AND `Date` < '".$nextDayDateTime->format('Y-m-d')." 00:00:00'");
 
     $rows = mysqli_num_rows($res_query);
 
@@ -148,15 +145,14 @@ function avg_day_temp($connection, $location = null){
 }
 
 
-function avg_month_temp($connection, $location = null){
+function avg_month_temp($location = null){
     $avg = 0;
 
     $currentDateTime = new DateTime();
     $nextMonthDateTime = (new DateTime())->modify('+1 month');
 
-    $query = "SELECT `Temperature` FROM `Weather` WHERE `Location`='Пермь' AND `Date` >= '".$currentDateTime->format('Y-m')."-01 00:00:00' AND `Date` < '".$nextMonthDateTime->format('Y-m')."-01 00:00:00'";
-    $res_query = mysqli_query($connection, $query);
-    if(!$res_query) handle_error("Ошибка в запросе!");
+    $res_query = database_query("SELECT `Temperature` FROM `Weather` 
+    WHERE `Location`='Пермь' AND `Date` >= '".$currentDateTime->format('Y-m')."-01 00:00:00' AND `Date` < '".$nextMonthDateTime->format('Y-m')."-01 00:00:00'");
 
     $rows = mysqli_num_rows($res_query);
 

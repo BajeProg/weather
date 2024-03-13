@@ -1,17 +1,11 @@
 <?php
-include_once("../db_connect.php");
 include_once("../functions.php");
 session_start();
 if(!isset($_SESSION["userID"])) header('Location: login.php');
 
 $currentDateTime = new DateTime();
 $query = "SELECT `ID` FROM `Sessions` WHERE `Token` = '".session_id()."' AND `Date_end` > '".$currentDateTime->format('Y-m-d H:i:s')."'";
-
-$res_query = mysqli_query($connection, $query);
-    
-if(!$res_query) handle_error("Ошибка в запросе!");
-
-if(mysqli_num_rows($res_query) == 0){ 
+if(mysqli_num_rows(database_query($query)) == 0){ 
     $message = "";
     if(isset($_SESSION["userID"])) $message = "?message=Время сессии истекло";
     session_unset();   // Remove the $_SESSION variable information.
@@ -24,18 +18,9 @@ if(mysqli_num_rows($res_query) == 0){
 }
 
 $currentDateTime->modify('+1 hour');
-$query = "UPDATE `Sessions` SET `Date_end`='".$currentDateTime->format('Y-m-d H:i:s')."' WHERE `Token` = '".session_id()."'";
+database_query("UPDATE `Sessions` SET `Date_end`='".$currentDateTime->format('Y-m-d H:i:s')."' WHERE `Token` = '".session_id()."'");
 
-$res_query = mysqli_query($connection, $query);
-    
-if(!$res_query) handle_error("Ошибка в запросе!"); 
-
-
-$query = "SELECT * FROM `API_keys` WHERE `User_ID` = ".$_SESSION["userID"];
-$res_query = mysqli_query($connection, $query);
-    
-if(!$res_query) handle_error("Ошибка в запросе!");
-
+$res_query = database_query("SELECT * FROM `API_keys` WHERE `User_ID` = ".$_SESSION["userID"]);
 $arr_res = array();
 $rows = mysqli_num_rows($res_query);
 
